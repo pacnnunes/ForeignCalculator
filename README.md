@@ -1,6 +1,7 @@
 # Foreign Calculator
 
 O Foreign Calculator é um aplicativo Android simples que permite multiplicar um valor de entrada por um valor base.
+Surgiu da necessidade de estar em outro pais, mas recebendo em outra moeda, outros aplicativos que tem a mesma funcionalidade possuem mais funcionalidades que o necessário, o que o torna esse aplicativo mais 'rapido no gatilho'.
 
 ## Funcionalidades
 
