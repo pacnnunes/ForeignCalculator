@@ -1,0 +1,86 @@
+//Compartilhando o codigo principal, do arquivo MainActivity.xml 
+
+import android.app.Activity;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.TextView;
+
+public class MainActivity extends Activity {
+
+    private EditText editTextValue;
+    private EditText editTextBaseValue;
+    private TextView textViewResult;
+    private SharedPreferences sharedPreferences;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        editTextValue = findViewById(R.id.editTextValue);
+        editTextBaseValue = findViewById(R.id.editTextBaseValue);
+        textViewResult = findViewById(R.id.textViewResult);
+
+        sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+
+        float lastBaseValue = sharedPreferences.getFloat("baseValue", 0);
+        editTextBaseValue.setText(String.valueOf(lastBaseValue));
+
+        editTextValue.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                multiplyValues();
+            }
+        });
+
+        editTextBaseValue.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Não é necessário implementar este método
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Não é necessário implementar este método
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                multiplyValues();
+            }
+        });
+
+        editTextValue.requestFocus();
+    }
+
+    private void multiplyValues() {
+        String valueString = editTextValue.getText().toString();
+        String baseValueString = editTextBaseValue.getText().toString();
+
+        if (!valueString.isEmpty() && !baseValueString.isEmpty()) {
+            double value = Double.parseDouble(valueString);
+            double baseValue = Double.parseDouble(baseValueString);
+
+            double result = value * baseValue;
+
+            textViewResult.setText(String.valueOf(result));
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putFloat("baseValue", (float) baseValue);
+            editor.apply();
+        }
+    }
+}
